@@ -38,7 +38,7 @@ $app['db'] = $app->share(function ($app) {
 
 // Handle the index/list page
 $app->match('/', function () use ($app) {
-    $query = $app['db']->prepare("SELECT url, caption FROM {$app['db.table']} ORDER BY id DESC LIMIT 3");
+    $query = $app['db']->prepare("SELECT url, caption FROM {$app['db.table']} ORDER BY id DESC LIMIT 10");
     $images = $query->execute() ? $query->fetchAll(PDO::FETCH_ASSOC) : array();
 
     return $app['twig']->render('index.twig', array(
