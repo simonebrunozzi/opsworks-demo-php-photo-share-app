@@ -42,7 +42,7 @@ $app->match('/', function () use ($app) {
     $images = $query->execute() ? $query->fetchAll(PDO::FETCH_ASSOC) : array();
 
     return $app['twig']->render('index.twig', array(
-        'title'  => 'My Photos',
+        'title'  => 'My Photos (limit to 3)',
         'images' => $images,
     ));
 });
