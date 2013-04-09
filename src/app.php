@@ -38,11 +38,11 @@ $app['db'] = $app->share(function ($app) {
 
 // Handle the index/list page
 $app->match('/', function () use ($app) {
-    $query = $app['db']->prepare("SELECT url, caption FROM {$app['db.table']}");
+    $query = $app['db']->prepare("SELECT url, caption FROM {$app['db.table']} ORDER BY id DESC LIMIT 3");
     $images = $query->execute() ? $query->fetchAll(PDO::FETCH_ASSOC) : array();
 
     return $app['twig']->render('index.twig', array(
-        'title'  => 'My Photos',
+        'title'  => 'My Photos (limit 3)',
         'images' => $images,
     ));
 });
@@ -69,7 +69,7 @@ $app->match('/add', function (Request $request) use ($app) {
             ));
 
             // Save the photo record to the database
-            $query = $app['db']->prepare("INSERT INTO {$app['db.table']} (url, caption) VALUES (:url, :caption)");
+            $query = $app['db']->prepare("INSERT INTO {$app['db.table']} (url, caption) VALUES (:url, :caption) ");
             $data = array(
                 ':url'     => "http://{$app['aws.bucket']}.s3.amazonaws.com/{$key}",
                 ':caption' => $request->request->get('photoCaption') ?: 'My cool photo!',
